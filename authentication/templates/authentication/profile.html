@@ -1,0 +1,68 @@
+{% extends 'post/header.html' %}
+{% load static %}
+{% block title %} {{user.username|capfirst}} {% endblock title %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Blog Details</span>
+            </h4>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="font-weight-bold my-0">Total Blog Post</h6>
+                    </div>
+                    <span class="font-weight-bold">{{post_count}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{user.username|capfirst}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                </ol>
+            </nav>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                <div id="form_errors">
+                    <strong>{{message}}</strong>
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <form class="needs-validation" novalidate action="{% url 'profile' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">First name</label>
+                        {{user_form.first_name}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName">Last name</label>
+                        {{user_form.last_name}}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="username">Username</label>
+                    <div class="input-group">
+                        {{user_form.username}}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email">Email </label>
+                    {{user_form.email}}
+                </div>
+                <button class="btn btn-success btn-lg btn-block" type="submit">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock body%}

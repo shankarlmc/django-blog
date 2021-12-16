@@ -1,0 +1,26 @@
+{% extends 'post/header.html' %}
+
+{% block title %} Login {% endblock title %}
+{% block body %}
+<div class="container mt-4 d-flex justify-content-center">
+    <form class="form-signin mt-3 mb-4" method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-label-group">
+            <label for="inputEmail">Username</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="Username..." required autofocus
+                name="username" autocomplete="off">
+        </div>
+        <div class="form-label-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
+                name="password">
+        </div>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
+{% endblock %}
