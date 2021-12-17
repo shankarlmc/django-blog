@@ -128,7 +128,9 @@ urlpatterns = [
 - Fetch all posts, categories and render in template
 - Create search and category filter system
 - Create a pagination and post details
-- Create a authentication app and perform login register
+- Create a authentication app and perform login
 - Create a userprofile update page
 - Create a post create functionality in frontend
+- Update a post from frontend
+- Delete a post from frontend
 - Goto next and previous post in post details page
