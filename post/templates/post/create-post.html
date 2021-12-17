@@ -1,0 +1,70 @@
+{% extends 'post/header.html' %}
+{% block title %}Create Post{% endblock title%}
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{'Post'}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create Post</li>
+                </ol>
+            </nav>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{message.tags}}{% endif %}
+                alert-dismissible" role="alert">
+                <div id="form_errors">
+                    <strong>{{message}}</strong>
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <form class="needs-validation" enctype="multipart/form-data" action="{% url 'create-post' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="firstName">Title</label>
+                        {{form.title}}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="lastName">Category</label>
+                    <select name="category" id="category" class="form-control">
+                        {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="mb-3">
+                    <label for="email">Content </label>
+                    {{form.content}}
+                </div>
+                <div class="mb-3">
+                    <label for="email">Feature Image </label>
+                    {{form.image}}
+                </div>
+                <div class="mb-3">
+                    <label for="id_is_active">Is Active ? </label>
+                    {{form.is_active}}
+                </div>
+                <div class="mb-3">
+                    <label for="id_is_featured">Is Featured Post ? </label>
+                    {{form.is_featured}}
+                </div>
+                <div class="row d-flex justify-content-end">
+                    <div class="col-md-4 ml-0 ">
+                        <button class="btn btn-success btn-lg btn-block" type="submit">Create Post</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body%}

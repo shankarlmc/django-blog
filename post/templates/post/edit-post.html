@@ -1,0 +1,73 @@
+{% extends 'post/header.html' %}
+{% block title %} Update {{editable_post.title}}{% endblock title%}
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Post</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{editable_post.title}}</li>
+                </ol>
+            </nav>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{message.tags}}{% endif %}
+                alert-dismissible" role="alert">
+                <div id="form_errors">
+                    <strong>{{message}}</strong>
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <form action="{% url 'update' editable_post.slug %}" class="needs-validation" enctype="multipart/form-data"
+                method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="firstName">Title</label>
+                        {{form.title}}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="lastName">Category</label>
+                    {{form.category}}
+                </div>
+                <div class="mb-3">
+                    <label for="email">Content </label>
+                    <textarea class="form-control" name="content" id="content" cols="30"
+                        rows="3">{{editable_post.content}}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image">Feature Image </label>
+                    <p>Current Image <a href="{{editable_post.image.url}}"
+                            target="_blank">{{editable_post.image.url}}</a></p>
+                    {{form.image}}
+                </div>
+                <div class="mb-3">
+                    <label for="is_active">Is Active ? </label>
+                    {{form.is_active}}
+                </div>
+                <div class="mb-3">
+                    <label for="is_featured">Is Featured post ? </label>
+                    {{form.is_featured}}
+                </div>
+                <div class="row d-flex justify-content-end">
+                    <div class="col-md-2 ml-0 ">
+                        <a class="btn btn-danger btn-lg btn-block" href="{% url 'delete' editable_post.slug %}">Delete
+                            Post</a>
+                    </div>
+                    <div class="col-md-2 ml-0 ">
+                        <button class="btn btn-info btn-lg btn-block" type="submit">Update Post</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body%}

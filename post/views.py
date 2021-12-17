@@ -1,10 +1,15 @@
+from django.contrib import messages
+from django.contrib.auth import login
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http.response import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import Category, Blog_Post
 from django.db.models.aggregates import Count
 from django.core.paginator import Paginator
 from django.db.models import Q
 from next_prev import next_in_order, prev_in_order
+from .forms import createPostForm
+from django.contrib.auth.decorators import login_required
 # from django.http import HttpResponse
 # Create your views here.
 
@@ -63,3 +68,81 @@ def details(request, slug):
         'next_post':next_post,
     }
     return render(request, 'post/post-details.html', context)
+
+
+@login_required(login_url="/login")
+def createPost(request):
+    categories = Category.objects.all().filter(is_active=True)
+    form = createPostForm()
+    if request.method == "POST":
+        title = request.POST.get('title')
+        if title == "":
+            messages.error(request, "Title field is required.")
+            return HttpResponseRedirect('/create-post')
+        category = Category.objects.get(id=request.POST.get('category'))   
+        content = request.POST.get('content')
+        if content == "":
+            messages.error(request, "Content field is required.")
+            return HttpResponseRedirect('/create-post')
+        image = request.FILES.get('image')
+        if image == "":
+            messages.error(request, "Image field is required.")
+            return HttpResponseRedirect('/create-post')
+
+        is_active = request.POST.get('is_active')
+        is_featured = request.POST.get('is_featured')
+
+        if is_active == "on":
+            is_active = True
+        else:
+            is_active = False
+
+        if is_featured == "on":
+            is_featured = True
+        else:
+            is_featured = False
+
+        post = Blog_Post.objects.create(
+            title = title,
+            category = category,
+            author = request.user,
+            content = content,
+            image = image,
+            is_active = is_active,
+            is_featured = is_featured,
+        )
+        post.save()
+        messages.success(request, f"{title} is Created Successfully.")
+        return HttpResponseRedirect('/create-post')
+
+    context = {
+        'form':form,
+        'categories':categories,
+    }
+    return render(request, 'post/create-post.html', context)
+
+
+@login_required(login_url="/login")
+def editPost(request, slug):
+    post = Blog_Post.objects.get(slug=slug)
+    if request.method == "POST":
+        form = createPostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+        messages.success(request, "Post Updated Successfully.")
+        return HttpResponseRedirect('/profile')
+    else:
+        form = createPostForm(instance=post)
+
+    context = {
+        'form':form,
+        'editable_post':post,
+    }
+    return render(request, 'post/edit-post.html', context)
+
+@login_required(login_url='/login')
+def deletePost(request, slug):
+    post = Blog_Post.objects.get(slug=slug)
+    post.delete()
+    messages.success(request, "Post Deleted Successfully.")
+    return HttpResponseRedirect('/profile')

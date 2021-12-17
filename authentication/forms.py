@@ -9,7 +9,8 @@ class updateUserProfileForm(forms.ModelForm):
             attrs={
                 'class': 'form-control'
             }
-        ))
+        )
+    )
     last_name = forms.CharField(
         max_length=100,
         required=True,
@@ -17,7 +18,8 @@ class updateUserProfileForm(forms.ModelForm):
             attrs={
                 'class': 'form-control'
             }
-        ))
+        )
+    )
     username = forms.CharField(
         max_length=100,
         required=True,
@@ -25,7 +27,8 @@ class updateUserProfileForm(forms.ModelForm):
             attrs={
                 'class': 'form-control'
             }
-        ))
+        )
+    )
     email = forms.CharField(
         max_length=100,
         required=True,
@@ -33,7 +36,8 @@ class updateUserProfileForm(forms.ModelForm):
             attrs={
                 'class': 'form-control'
             }
-        ))
+        )
+    )
     
     class Meta:
         model = User
