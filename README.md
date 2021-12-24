@@ -6,7 +6,8 @@
 
 ```
 python -m venv env
-env\Scripts\Activate
+env\Scripts\Activate  # for windows
+source env\Scripts\bin # for linux
 ```
 
 - Install Django and create a first django-project

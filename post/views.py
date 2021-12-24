@@ -10,7 +10,6 @@ from django.db.models import Q
 from next_prev import next_in_order, prev_in_order
 from .forms import createPostForm
 from django.contrib.auth.decorators import login_required
-# from django.http import HttpResponse
 # Create your views here.
 
 def index(request):
