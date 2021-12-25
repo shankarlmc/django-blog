@@ -1,11 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http.response import Http404, HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import Category, Blog_Post
 from django.db.models.aggregates import Count
-from django.core.paginator import Paginator
 from django.db.models import Q
 from next_prev import next_in_order, prev_in_order
 from .forms import createPostForm
